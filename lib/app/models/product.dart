@@ -4,7 +4,7 @@ class Products {
   String? name;
   String? price;
   String? quantity;
-  String? id;
+  int? id;
   get total {
     return double.parse(price!) * double.parse(quantity!);
   }
@@ -15,7 +15,7 @@ class Products {
     name = json['name'];
     price = f.format(json['price']);
     quantity = f.format(json['quantity']);
-    id = json['id'];
+    id = int.parse(json['id']);
   }
 
   Map<String, dynamic> toJson() {

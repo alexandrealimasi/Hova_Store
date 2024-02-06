@@ -11,8 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProductsController extends GetxController {
   DioService dioService = DioService();
   List<Products> listProducts = [];
-  ConfirmTransactionController controller =
-      Get.put<ConfirmTransactionController>(ConfirmTransactionController());
   var isloading = false.obs;
   fetchDatas() async {
     isloading.value = true;
@@ -30,18 +28,18 @@ class ProductsController extends GetxController {
     }
   }
 
-  RxList<Products> productsList = RxList([]);
+  RxList<Products> localListProducts = RxList([]);
 
   addToCart(Products products) {
-    if (productsList.every((element) => element.id != products.id)) {
-      productsList.add(products);
-      update();
+    if (localListProducts.every((element) => element.id != products.id)) {
+      localListProducts.add(products);
     }
+    update();
   }
 
   get totalAmount {
     double data = 0;
-    productsList.forEach((element) {
+    localListProducts.forEach((element) {
       data += element.total;
     });
     return data;

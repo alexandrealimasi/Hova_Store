@@ -140,11 +140,9 @@ class ProductsView extends GetView<ProductsController> {
                                                   fontWeight: FontWeight.w800,
                                                 )),
                                           )
-                                        : controller.productsList.every(
+                                        : controller.localListProducts.every(
                                                 (element) =>
-                                                    element.id !=
-                                                    controller
-                                                        .listProducts[index].id)
+                                                    element.id != product.id)
                                             ? ElevatedButton(
                                                 style: ButtonStyle(
                                                     shape: MaterialStatePropertyAll(

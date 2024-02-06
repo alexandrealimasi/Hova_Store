@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hova_store/app/core/palettes.dart';
 import 'package:hova_store/app/core/responsive_ui.dart';
 import 'package:hova_store/app/data/left_panel_btn.dart';
@@ -34,6 +35,10 @@ class DashboardView extends GetView<DashboardController> {
             children: [
               if (!Responsive.isMobile(context))
                 NavigationRail(
+                    selectedIconTheme:
+                        IconThemeData(color: AppColors.textWhite),
+                    unselectedIconTheme:
+                        IconThemeData(color: AppColors.subTitle),
                     indicatorShape: BeveledRectangleBorder(),
                     labelType: NavigationRailLabelType.all,
                     selectedLabelTextStyle:
@@ -47,6 +52,7 @@ class DashboardView extends GetView<DashboardController> {
                       color: AppColors.purpleColor,
                       child: Text(
                         "Hova Store".toUpperCase(),
+                        style: GoogleFonts.openSans(color: AppColors.textWhite),
                       ),
                     ),
                     destinations: [

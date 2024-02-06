@@ -74,9 +74,9 @@ class ConfirmTransactionComponent extends StatelessWidget {
                       separatorBuilder: (context, index) {
                         return Divider();
                       },
-                      itemCount: controller.productsList.length,
+                      itemCount: controller.localListProducts.length,
                       itemBuilder: (context, index) {
-                        Products products = controller.productsList[index];
+                        Products products = controller.localListProducts[index];
                         return ListTile(
                           leading: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +87,7 @@ class ConfirmTransactionComponent extends StatelessWidget {
                                     fontWeight: FontWeight.w700,
                                   )),
                               Text(
-                                  "QTY ${controller.productsList[index].quantity} x ${controller.productsList[index].price}",
+                                  "QTY ${controller.localListProducts[index].quantity} x ${controller.localListProducts[index].price}",
                                   style: GoogleFonts.openSans(
                                     color: AppColors.subTitle,
                                     fontWeight: FontWeight.w400,
@@ -101,7 +101,8 @@ class ConfirmTransactionComponent extends StatelessWidget {
                               GestureDetector(
                                   onTap: () {},
                                   child: const Icon(Icons.more_horiz)),
-                              Text("${controller.productsList[index].total}")
+                              Text(
+                                  "${controller.localListProducts[index].total}")
                             ],
                           ),
                         );
@@ -223,7 +224,7 @@ class ConfirmTransactionComponent extends StatelessWidget {
               ),
               Row(
                 children: [
-                  controller.productsList.isNotEmpty
+                  controller.localListProducts.isNotEmpty
                       ? Expanded(
                           child: ElevatedButton(
                               style: ButtonStyle(
@@ -239,7 +240,7 @@ class ConfirmTransactionComponent extends StatelessWidget {
                                   backgroundColor: MaterialStatePropertyAll(
                                       AppColors.textWhite)),
                               onPressed: () {
-                                controller.productsList.clear();
+                                controller.localListProducts.clear();
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
@@ -268,7 +269,7 @@ class ConfirmTransactionComponent extends StatelessWidget {
                           onPressed: () {},
                           child: Padding(
                             padding: EdgeInsets.all(10.0),
-                            child: controller.productsList.isNotEmpty
+                            child: controller.localListProducts.isNotEmpty
                                 ? Text("CONFIRM TRANSACTION",
                                     style: GoogleFonts.openSans(
                                       fontWeight: FontWeight.w800,
