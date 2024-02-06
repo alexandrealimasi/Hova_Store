@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -68,46 +69,51 @@ class ConfirmTransactionComponent extends StatelessWidget {
                         topRight: Radius.circular(10))),
                 child: Column(
                   children: [
-                    ListView.separated(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      separatorBuilder: (context, index) {
-                        return Divider();
-                      },
-                      itemCount: controller.localListProducts.length,
-                      itemBuilder: (context, index) {
-                        Products products = controller.localListProducts[index];
-                        return ListTile(
-                          leading: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("${products.name}",
-                                  style: GoogleFonts.openSans(
-                                    fontWeight: FontWeight.w700,
-                                  )),
-                              Text(
-                                  "QTY ${controller.localListProducts[index].quantity} x ${controller.localListProducts[index].price}",
-                                  style: GoogleFonts.openSans(
-                                    color: AppColors.subTitle,
-                                    fontWeight: FontWeight.w400,
-                                  ))
-                            ],
+                    controller.loading.value
+                        ? Center(child: CupertinoActivityIndicator())
+                        : ListView.separated(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            separatorBuilder: (context, index) {
+                              return Divider();
+                            },
+                            itemCount: controller.localListProducts.length,
+                            itemBuilder: (context, index) {
+                              final products =
+                                  controller.localListProducts[index];
+                              return ListTile(
+                                leading: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("${products['name']}",
+                                        style: GoogleFonts.openSans(
+                                          fontWeight: FontWeight.w700,
+                                        )),
+                                    Text(
+                                        "QTY ${controller.localListProducts[index]['quantity']} x ${controller.localListProducts[index]['price']}",
+                                        style: GoogleFonts.openSans(
+                                          color: AppColors.subTitle,
+                                          fontWeight: FontWeight.w400,
+                                        ))
+                                  ],
+                                ),
+                                trailing: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    GestureDetector(
+                                        onTap: () {},
+                                        child: const Icon(Icons.more_horiz)),
+                                    Text(
+                                        "${controller.localListProducts[index]['quantity']}")
+                                  ],
+                                ),
+                              );
+                            },
                           ),
-                          trailing: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                  onTap: () {},
-                                  child: const Icon(Icons.more_horiz)),
-                              Text(
-                                  "${controller.localListProducts[index].total}")
-                            ],
-                          ),
-                        );
-                      },
-                    ),
                     Divider(),
                     ListTile(
                       leading: Text(
@@ -239,8 +245,8 @@ class ConfirmTransactionComponent extends StatelessWidget {
                                       AppColors.redColor),
                                   backgroundColor: MaterialStatePropertyAll(
                                       AppColors.textWhite)),
-                              onPressed: () {
-                                controller.localListProducts.clear();
+                              onPressed: () async {
+                                await controller.cleanData();
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),

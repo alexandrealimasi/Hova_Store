@@ -3,14 +3,12 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:hova_store/app/core/constants.dart';
 import 'package:hova_store/app/models/product.dart';
-import 'package:hova_store/app/modules/Confirm_transaction/controllers/confirm_transaction_controller.dart';
 import 'package:hova_store/app/repository/dio_service.dart';
-import 'package:hova_store/app/repository/shared_preferences_helper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hova_store/app/repository/hive_storage.dart';
 
 class ProductsController extends GetxController {
   DioService dioService = DioService();
-  List<Products> listProducts = [];
+  RxList<Products> listProducts = RxList([]);
   var isloading = false.obs;
   fetchDatas() async {
     isloading.value = true;
@@ -28,19 +26,60 @@ class ProductsController extends GetxController {
     }
   }
 
-  RxList<Products> localListProducts = RxList([]);
+  var loading = false.obs;
+  RxList localListProducts = RxList([]);
+  fetshHivedata() async {
+    try {
+      final resp = await HiveStorage.getData(myProductKey);
+      (resp as List).forEach((element) {
+        localListProducts.add(element);
+      });
 
-  addToCart(Products products) {
-    if (localListProducts.every((element) => element.id != products.id)) {
-      localListProducts.add(products);
+      loading.value = false;
+      log(resp.toString());
+    } catch (e) {
+      log("Message Error" + e.toString());
+      loading.value = false;
     }
-    update();
+  }
+
+  cleanData() async {
+    try {
+      await HiveStorage.clearData(key: myProductKey);
+      localListProducts.clear();
+      listProducts.clear();
+      fetshHivedata();
+      fetchDatas();
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  addToCart(Products products) async {
+    try {
+      // if (localListProducts.every((element) => element['id'] != products.id)) {
+      Products data = Products(
+          id: products.id,
+          name: products.name,
+          price: products.price,
+          quantity: products.quantity);
+
+      await HiveStorage.saveData(value: data.toJson(), key: myProductKey);
+      localListProducts.clear();
+      listProducts.clear();
+      fetshHivedata();
+      fetchDatas();
+      // }
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   get totalAmount {
     double data = 0;
     localListProducts.forEach((element) {
-      data += element.total;
+      data += double.parse("${element['price']}") *
+          double.parse("${element['quantity']}");
     });
     return data;
   }
@@ -49,6 +88,7 @@ class ProductsController extends GetxController {
   void onInit() {
     super.onInit();
     fetchDatas();
+    fetshHivedata();
   }
 
   @override

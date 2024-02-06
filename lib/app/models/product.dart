@@ -2,28 +2,31 @@ import 'package:intl/intl.dart';
 
 class Products {
   String? name;
-  String? price;
-  String? quantity;
+  int? price;
+  int? quantity;
   int? id;
-  get total {
-    return double.parse(price!) * double.parse(quantity!);
+  double total() {
+    double x = 0.0;
+    x = double.parse(price == null ? "0" : "$price") *
+        double.parse(quantity == null ? "0" : "$quantity");
+    return x;
   }
 
   Products({this.name, this.price, this.quantity, this.id});
-  var f = NumberFormat("###0.0#", "en_US");
+  // var f = NumberFormat("###0.0#", "en_US");
   Products.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    price = f.format(json['price']);
-    quantity = f.format(json['quantity']);
+    price = json['price'];
+    quantity = json['quantity'];
     id = int.parse(json['id']);
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['price'] = this.price;
-    data['quantity'] = this.quantity;
-    data['id'] = this.id;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['price'] = price;
+    data['quantity'] = quantity;
+    data['id'] = id;
     return data;
   }
 }

@@ -17,6 +17,7 @@ class ProductsView extends GetView<ProductsController> {
   Widget build(BuildContext context) {
     ProductsController controller =
         Get.put<ProductsController>(ProductsController());
+
     return Obx(
       () => Column(
         children: [
@@ -142,7 +143,9 @@ class ProductsView extends GetView<ProductsController> {
                                           )
                                         : controller.localListProducts.every(
                                                 (element) =>
-                                                    element.id != product.id)
+                                                    element['id'] !=
+                                                    controller
+                                                        .listProducts[index].id)
                                             ? ElevatedButton(
                                                 style: ButtonStyle(
                                                     shape: MaterialStatePropertyAll(

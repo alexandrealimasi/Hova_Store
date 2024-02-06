@@ -5,13 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hova_store/app/repository/dio_service.dart';
-import 'app/repository/shared_preferences_helper.dart';
 import 'app/routes/app_pages.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
-  await SharedPreferencesHelper.initialize();
+  Hive.initFlutter();
   runApp(
     GetMaterialApp(
       theme: ThemeData(
