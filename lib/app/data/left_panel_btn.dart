@@ -21,9 +21,10 @@ class LeftPanelBtn {
     ),
     LeftPanelBtn(
         icon: const Icon(Icons.shopping_bag_outlined), label: "SELL", id: 2),
-    LeftPanelBtn(icon: const Icon(Icons.money), label: "Transactions", id: 3),
-    LeftPanelBtn(icon: const Icon(Icons.money), label: "EXPENSES", id: 4),
-    LeftPanelBtn(icon: const Icon(Icons.settings), label: "SETTING", id: 5)
+    LeftPanelBtn(
+        icon: const Icon(Icons.home_work), label: "Transactions", id: 3),
+    LeftPanelBtn(icon: const Icon(Icons.home_work), label: "EXPENSES", id: 4),
+    LeftPanelBtn(icon: const Icon(Icons.home_work), label: "SETTING", id: 5)
   ];
 
   static List screens = <Widget>[
